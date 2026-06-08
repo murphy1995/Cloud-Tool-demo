@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>云存储迁移调研与评估工具</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <div class="header__brand">
+        <div class="header__logo" aria-hidden="true">☁</div>
+        <div>
+          <h1>云存储迁移调研与评估</h1>
+          <p class="header__subtitle">输入客户环境参数，实时生成迁移架构与时长估算</p>
+        </div>
+      </div>
+    </header>
+
+    <main class="main">
+      <section class="panel panel--input" aria-label="输入参数">
+        <h2 class="panel__title">
+          <span class="panel__icon">📋</span>
+          客户环境输入
+        </h2>
+
+        <form id="evalForm" class="form" novalidate>
+          <div class="form__group">
+            <label for="dataVolume">数据量</label>
+            <div class="input-row">
+              <input type="number" id="dataVolume" min="0.01" step="0.01" value="10" required />
+              <select id="dataUnit">
+                <option value="TB" selected>TB</option>
+                <option value="GB">GB</option>
+                <option value="PB">PB</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form__group">
+            <label for="fileCount">文件数量</label>
+            <input type="number" id="fileCount" min="1" step="1" value="1000000" required />
+            <span class="form__hint" id="avgFileSizeHint">平均文件大小：—</span>
+          </div>
+
+          <div class="form__group">
+            <label for="storageType">存储介质</label>
+            <select id="storageType">
+              <option value="block">块存储 (Block Storage)</option>
+              <option value="file">文件存储 (File Storage)</option>
+              <option value="object" selected>对象存储 (Object Storage)</option>
+            </select>
+            <span class="form__hint" id="storageTypeHint"></span>
+          </div>
+
+          <div class="form__group">
+            <label for="sourceLocation">源存储位置</label>
+            <select id="sourceLocation"></select>
+          </div>
+
+          <div class="form__group">
+            <label for="targetLocation">迁移目标</label>
+            <select id="targetLocation"></select>
+          </div>
+
+          <div class="form__group">
+            <label for="bandwidth">迁移网络带宽</label>
+            <div class="input-row">
+              <input type="number" id="bandwidth" min="1" step="1" value="1000" required />
+              <select id="bandwidthUnit">
+                <option value="Mbps" selected>Mbps</option>
+                <option value="Gbps">Gbps</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form__group">
+            <label for="parallelism">并行传输通道数</label>
+            <input type="range" id="parallelism" min="1" max="32" value="8" />
+            <span class="form__hint"><span id="parallelismValue">8</span> 路并行（影响元数据与对象迁移吞吐）</span>
+          </div>
+        </form>
+      </section>
+
+      <section class="panel panel--output" aria-label="评估结果">
+        <h2 class="panel__title">
+          <span class="panel__icon">📊</span>
+          评估结果
+        </h2>
+
+        <div class="metrics" id="metrics"></div>
+
+        <div class="result-block">
+          <h3 class="result-block__title">迁移架构图</h3>
+          <div class="diagram-wrap" id="diagramWrap">
+            <div id="mermaidContainer" class="mermaid-container"></div>
+          </div>
+        </div>
+
+        <div class="result-block">
+          <h3 class="result-block__title">迁移时长分解</h3>
+          <div class="timeline" id="timeline"></div>
+        </div>
+
+        <div class="result-block">
+          <h3 class="result-block__title">架构与迁移建议</h3>
+          <div class="recommendations" id="recommendations"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>估算基于典型云迁移场景模型，实际时长受网络抖动、小文件比例、API 限流等因素影响，建议预留 15%–30% 缓冲。</p>
+    </footer>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
