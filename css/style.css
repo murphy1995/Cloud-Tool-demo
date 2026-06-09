@@ -41,6 +41,10 @@ body {
 }
 
 .header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
   margin-bottom: 28px;
 }
 
@@ -48,6 +52,29 @@ body {
   display: flex;
   align-items: center;
   gap: 16px;
+}
+
+.lang-toggle {
+  flex-shrink: 0;
+  padding: 8px 16px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-family: inherit;
+  color: var(--text);
+  background: var(--accent-soft);
+  border: 1px solid rgba(59, 130, 246, 0.45);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, transform 0.1s;
+}
+
+.lang-toggle:hover {
+  background: rgba(59, 130, 246, 0.28);
+  border-color: var(--accent);
+}
+
+.lang-toggle:active {
+  transform: scale(0.96);
 }
 
 .header__logo {
